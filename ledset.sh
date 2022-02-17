@@ -1,7 +1,7 @@
 #!/bin/sh
 # Configure device
-stty -F /dev/ttyUSB0 -hup || sleep 1
-stty -F /dev/ttyUSB0 ospeed 115200 || sleep 1
+stty -F /dev/ttyACM0 -hup || sleep 1
+stty -F /dev/ttyACM0 ospeed 115200 || sleep 1
 
 # Check for keywords
 case "$@" in
@@ -33,4 +33,4 @@ case "$@" in
 esac
 
 # Send command
-echo -n "$ARD_CMD" > /dev/ttyUSB0
+echo -n "$ARD_CMD" > /dev/ttyACM0

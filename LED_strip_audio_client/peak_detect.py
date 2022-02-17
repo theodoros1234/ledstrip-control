@@ -12,11 +12,12 @@ from pulseaudio.lib_pulseaudio import *
 SINK_NAME = 'PulseEffects_apps'
 #SINK_NAME = 'alsa_output.pci-0000_00_14.2.analog-stereo'  # edit to match your sink
 METER_RATE = 60
+MAX_IDLE_TIME = 5
 MAX_SAMPLE_VALUE = 127
 DISPLAY_SCALE = 2
 MAX_SPACES = MAX_SAMPLE_VALUE >> DISPLAY_SCALE
 prev_sample=0
-DEV_PATH = "/dev/ttyUSB0"
+DEV_PATH = "/dev/ttyACM0"
 
 class PeakMonitor(object):
 
@@ -116,6 +117,7 @@ def main():
       prev_sample=0
       prev_sample_raw=0
       gain=30.0
+      idle_time=0
       print '\033[s'
       for sample in monitor:
           # Skip samples if running behind
@@ -147,12 +149,23 @@ def main():
           sample=int(round(sample))
           if sample>255:
             sample=255
+          
+          # Count idle time
+          if sample==0:
+            idle_time+=1
+          else:
+            idle_time=0
 
           # Send info to Arduino
           f.write("#");
-          if sample<16:
-            f.write("0")
-          f.write(hex(sample).split('x')[-1])
+          # Use max brightness if idle
+          if idle_time//METER_RATE>=MAX_IDLE_TIME*2:
+            f.write("FF")
+          else:
+          # Otherwise, use sample controlled brightness
+            if sample<16:
+              f.write("0")
+            f.write(hex(sample).split('x')[-1])
           f.flush()
           
           # Display info on terminal

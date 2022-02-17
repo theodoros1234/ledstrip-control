@@ -1,6 +1,6 @@
-#define red   11
+#define red   9
 #define green 10
-#define blue  9
+#define blue  6
 #define cycle_rate 1536
 bool invert=false;
 byte r_v=255,g_v=255,b_v=255,br=255,read_val,str_pos=255;
