@@ -23,7 +23,7 @@ void change_mode(bool next) {
   
   switch (mode_sel) {
     case 0:
-      mode='S';r_v=0xff;g_v=0x1f;b_v=0x00;
+      mode='S';r_v=0xff;g_v=0;b_v=0x00;
       break;
     case 1:
       mode='S';r_v=0xff;g_v=0x2f;b_v=0x00;
