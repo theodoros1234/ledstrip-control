@@ -18,7 +18,7 @@ void change_mode(bool next) {
     mode_sel--;
   if (mode_sel==21)
     mode_sel=0;
-  if (mode_sel==-1)
+  if (mode_sel==255)
     mode_sel=20;
   
   switch (mode_sel) {
